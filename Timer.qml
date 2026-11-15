@@ -1,6 +1,8 @@
 import Quickshell
 import QtQuick
 import "modules"
+import "components"
+import "bar"
 
 
 // Timer refresing every 2s
@@ -9,7 +11,7 @@ Timer {
   running: true
   repeat: true
   onTriggered: {
-    cpuProc.running = true
-    memProc.running = true
+    CpuProc.running = true
+    RamProc.running = true
   }
 }

@@ -15,7 +15,7 @@ RowLayout {  // Right
 
   spacing: 15
 
-  Text { text: "ipad"; color: "#e6e6e8"}
+  IpadButton {} // OdSender ( ipad screen )
   BarText { text: NetworkProc.barTxt } // Network
   Text { text: "bt"; color: "#e6e6e8"}
   BarText { text: VolumelvlProc.barTxt  } // Volume

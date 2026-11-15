@@ -55,7 +55,7 @@ Scope {
 			Rectangle {
 				anchors.fill: parent
 				radius: height / 2
-				color: Theme.backgroundTransparent
+				color: Theme.bgTs
 
 				RowLayout {
 					anchors {

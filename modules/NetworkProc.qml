@@ -28,6 +28,6 @@ Singleton {
     return String.fromCodePoint(0xF091F + (tier - 1) * 3)
   }
 
-  property string barTxt: icon
+  readonly property string barTxt: icon
 }
 
