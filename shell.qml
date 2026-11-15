@@ -7,6 +7,7 @@ import QtQuick.Layouts  // RowLayout
 
 import "bar"
 import "modules"
+import "OSDs"
 
 PanelWindow {
   id: root
@@ -20,6 +21,7 @@ PanelWindow {
     color: Theme.background // Background color
   }
 
+  // Bar 
   Left {
     anchors {
       left: parent.left
@@ -41,8 +43,6 @@ PanelWindow {
   }
 
 
-
-
-
- 
+  // OSDs 
+  VolumeOSD {}
 }

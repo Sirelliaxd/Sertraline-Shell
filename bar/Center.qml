@@ -1,4 +1,3 @@
-
 import Quickshell
 import QtQuick
 import "root:/"
@@ -24,12 +23,11 @@ Item { // Center
     anchors.baseline: time.baseline
     font { family: Theme.fontFamily; pixelSize: (Theme.fontSize * 0.6); bold: false }
   }
-  Text {
+  BarText {
     id: time
     text: Qt.formatDateTime(clock.date, "hh:mm")
     color: Theme.foreground
     anchors.centerIn: parent
-    font { family: Theme.fontFamily; pixelSize: Theme.fontSize; bold: true }
   }
   Text {
     text: Qt.formatDateTime(clock.date, "dd-MM")

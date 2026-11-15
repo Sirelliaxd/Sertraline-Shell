@@ -11,6 +11,5 @@ Timer {
   onTriggered: {
     cpuProc.running = true
     memProc.running = true
-    volProc.running = true
   }
 }

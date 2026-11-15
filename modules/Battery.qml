@@ -8,10 +8,11 @@ import "root:/"
 Singleton {
   property var battery: UPower.displayDevice
   property bool charging: battery.state === UPowerDeviceState.Charging 
-                                            || battery.state === UPowerDeviceState.FullyCharged
+  property bool homed: battery.state === UPowerDeviceState.FullyCharged
   readonly property int level: Math.round(battery.percentage * 100)
 
   readonly property string icon: {
+    if (homed) return "󱤁"
     if (charging) return ""
     if (level >= 100) return ""
     if (level >= 75) return ""
@@ -21,4 +22,7 @@ Singleton {
 
     return "󰂑"
   }
+
+  property string barTxt: icon + " " + level + "%"
+
 }

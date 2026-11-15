@@ -1,25 +1,35 @@
 pragma Singleton
 
 import Quickshell
+import Quickshell.Services.Pipewire
 import Quickshell.Io
 import QtQuick
 import "root:/"
 
 Singleton {
-  property int volumeLevel: 0
+  id: root
 
-  Process {
-    id: volProc
-    command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
-    stdout: SplitParser {
-      onRead: data => {
-        if (!data) return
-        var match = data.match(/Volume:\s*([\d.]+)/)
-        if (match) {
-          volumeLevel = Math.round(parseFloat(match[1]) * 100)
-        }
-      }
-    }
-    Component.onCompleted: running = true
+  readonly property PwNode sink: Pipewire.defaultAudioSink
+
+  PwObjectTracker {
+    objects: [root.sink]
   }
+
+  readonly property bool ready: !!sink && sink.ready && !!sink.audio
+  readonly property bool muted: ready && sink.audio.muted
+
+  readonly property int volumeLevel: ready ? Math.round(sink.audio.volume * 100) : 0
+
+  readonly property string icon: {
+    if (!ready) return "󰓄 "
+    if (muted || volumeLevel === 0) return " "
+
+    if (volumeLevel >= 67) return " "
+    if (volumeLevel >= 34) return " "
+    if (volumeLevel < 34) return " "
+    return "󰓃"
+  }
+
+  property string barTxt: icon + volumeLevel + "%"
+
 }

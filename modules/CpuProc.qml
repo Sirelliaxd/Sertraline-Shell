@@ -33,4 +33,7 @@ Singleton {
     }
     Component.onCompleted: running = true
   }
+
+  property string barTxt: " " + cpuUsage + "%"
+
 }
