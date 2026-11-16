@@ -1,5 +1,5 @@
 <h1 align="center">Sertraline Shell</h1>
-![GitHub last commit](https://img.shields.io/github/last-commit/Sirelliaxd/Sertraline-Shell?style=for-the-badge&labelColor=%2314141c&color=%23e6e6e8) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Sirelliaxd/Sertraline-Shell?style=for-the-badge&label=REPO%20SIZE&labelColor=%2314141c&color=%23787c99)
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Sirelliaxd/Sertraline-Shell?style=for-the-badge&labelColor=%2314141c&color=%23e6e6e8"> <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Sirelliaxd/Sertraline-Shell?style=for-the-badge&label=REPO%20SIZE&labelColor=%2314141c&color=%23787c99">
 
 ---
 My Quickshell Config 
