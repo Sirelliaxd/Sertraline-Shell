@@ -1,24 +1,37 @@
-# Sertraline Shell
-My quickshell top bar, app runner and more in the future:3
+<h1 align="center">Sertraline Shell</h1>
+![GitHub last commit](https://img.shields.io/github/last-commit/Sirelliaxd/Sertraline-Shell?style=for-the-badge&labelColor=%2314141c&color=%23e6e6e8)![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Sirelliaxd/Sertraline-Shell?style=for-the-badge&label=REPO%20SIZE&labelColor=%2314141c&color=%23787c99)
+
+---
+My Quickshell Config 
+- Bar 
+- App Launcher* 
+- Notification center* 
+- Clipboard manager* 
+- Theme switcher* 
+- OSDs 
+*And other essential things for a functional linux desktop.*
 
 
-
-# Screenshots
+( Features marked with `*` are yet to be implemented/finished )
+## Screenshots
 
 
 - To-Do
 
 
-# Installation
+## Installation
 
 
 - To-Do
 
 
 ---
-#### Dependencies
+### Dependencies
+<h3 align="center">Dependencies</h3>
 
-*Designed for Hyprland, probably wont work properly without it*
+- Designed for Hyprland (*probably wont work properly without it*)
+- Volume control designed around *pipewire*
+- [OpenDisplay](https://opendisplay.app/docs/linux/install/) for ipad second screen button*
 
 ~ For blur to work on the top notch this needs to be included in hyprland config:
 ```
@@ -29,8 +42,3 @@ hl.layer_rule({
 	ignore_alpha = 0.2,
 })
 ```
-
-Volume control designed around *pipewire*
-
-*needs [OpenDisplay](https://opendisplay.app/docs/linux/install/) for ipad second screen*
-
