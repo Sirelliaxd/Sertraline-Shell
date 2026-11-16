@@ -1,51 +1,95 @@
 import Quickshell
-import Quickshell.Wayland  // wayland specific support
-import Quickshell.Hyprland // Hyprland IPC
-import Quickshell.Io // Process type
+import Quickshell.Wayland
 import QtQuick
-import QtQuick.Layouts  // RowLayout
 
 import "root:/"
 import "root:/bar"
 import "root:/modules"
 
-
 Variants {
   model: Quickshell.screens
-  
-  PanelWindow {
-    id: barRoot
+
+  Scope {
+    id: scope
     required property var modelData
-    screen: modelData
 
-    property color barBackground: Theme.background // Bcakground Color
+    property real flare: Theme.taskbarFlare
+    property real pad: Theme.pad
 
+    // ───────── LEFT ─────────
+    PanelWindow {
+      screen: scope.modelData
+      anchors { top: true; left: true }
+      implicitWidth: leftContent.implicitWidth + scope.pad + scope.flare
+      implicitHeight: Theme.barHeight
+      color: "transparent"
+      exclusionMode: ExclusionMode.Ignore
+      WlrLayershell.namespace: "quickshell-border"
 
-    anchors { top: true; left: true; right: true }
-    implicitHeight: Theme.barHeight
+      WaveShape {
+        anchors.fill: parent
+        mode: "left"
+        flare: scope.flare
+        fill: Theme.background
+      }
 
-
-    color: barBackground
-    WlrLayershell.namespace: "quickshell-border"
-
-    // Bar 
-    Left {
-      anchors {
-        left: parent.left
-        verticalCenter: parent.verticalCenter
-        leftMargin: 10
+      Left {
+        id: leftContent
+        anchors {
+          left: parent.left
+          leftMargin: scope.pad
+          verticalCenter: parent.verticalCenter
+        }
       }
     }
 
-    Center {
-      anchors.centerIn: parent
+    // ───────── CENTER ─────────
+    PanelWindow {
+      screen: scope.modelData
+      anchors { top: true }
+      implicitWidth: centerContent.implicitWidth + 165
+      implicitHeight: Theme.barHeight
+      exclusiveZone: Theme.barHeight
+      color: "transparent"
+      WlrLayershell.namespace: "quickshell-notch"
+
+      WaveShape {
+        anchors.fill: parent
+        mode: "center"
+        flare: scope.flare
+        fill: Theme.background
+      }
+
+      Center {
+        id: centerContent
+        anchors.centerIn: parent
+      }
     }
 
-    Right {
-      anchors {
-        right: parent.right
-        verticalCenter: parent.verticalCenter
-        rightMargin: 10
+    // ───────── RIGHT ─────────
+    PanelWindow {
+      screen: scope.modelData
+      anchors { top: true; right: true }
+      implicitWidth: rightContent.implicitWidth + scope.pad + scope.flare
+      implicitHeight: Theme.barHeight
+      color: "transparent"
+      exclusionMode: ExclusionMode.Ignore
+      WlrLayershell.namespace: "quickshell-border"
+
+      WaveShape {
+        anchors.fill: parent
+        mode: "right"
+        flare: scope.flare
+        fill: Theme.background
+      }
+
+      Right {
+        id: rightContent
+        anchors {
+          right: parent.right
+          rightMargin: scope.pad
+          verticalCenter: parent.verticalCenter
+        }
       }
     }
   }

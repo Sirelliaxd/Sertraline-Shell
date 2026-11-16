@@ -28,7 +28,8 @@ Scope {
 
       PanelWindow { // Left
         screen: screenRoot.modelData
-        anchors { top: true; bottom: true; left: true }
+        anchors { top: true; bottom: true; left: true; }
+        margins { top: Theme.barHeight}
         implicitWidth: root.thickness
         exclusiveZone: root.thickness
         WlrLayershell.layer: WlrLayer.Bottom
@@ -39,6 +40,7 @@ Scope {
       PanelWindow { // Right
         screen: screenRoot.modelData
         anchors { top: true; bottom: true; right: true }
+        margins { top: Theme.barHeight}
         implicitWidth: root.thickness
         exclusiveZone: root.thickness
         WlrLayershell.layer: WlrLayer.Bottom
