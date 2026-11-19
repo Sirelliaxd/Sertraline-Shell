@@ -7,6 +7,7 @@ import "root:/"
 
 Singleton {
   id: root
+  property alias running: cpuProc.running
   property int cpuUsage: 0
   property var lastCpuIdle: 0
   property var lastCpuTotal: 0

@@ -31,11 +31,12 @@ My Quickshell Config
 ### Dependencies
 <h3 align="center">Dependencies</h3>
 
-- Designed for Hyprland (*probably wont work properly without it*)
+- Designed for Hyprland [My Dots](https://github.com/Sirelliaxd/HyprlandDots) (*probably won't work properly without it*)
 - Volume control designed around *pipewire*
 - [OpenDisplay](https://opendisplay.app/docs/linux/install/) for ipad second screen button*
 
-~ For blur to work on the top notch this needs to be included in hyprland config:
+>[!IMPORTANT]
+>For blur to work on the top notch this needs to be included in hyprland config:
 ```
 hl.layer_rule({
 	match = { namespace = "quickshell-notch" },

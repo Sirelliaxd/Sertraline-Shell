@@ -1,21 +1,23 @@
 import Quickshell
-import Quickshell.Wayland  // wayland specific support
-import Quickshell.Hyprland // Hyprland IPC
-import Quickshell.Io // Process type
 import QtQuick
-import QtQuick.Layouts  // RowLayout
 
-import "bar"
-import "modules"
 import "OSDs"
 import "components"
+import "menus"
 
 ShellRoot {
-  // Taskbar
-  TaskBar {}
-  Border {}
-  Corners {}
+    // Refresh CPU/RAM every 2s
+    RefreshTimer {}
 
-  // OSDs 
-  VolumeOSD {}
+    // Taskbar
+    TaskBar {}
+    Border {}
+    Corners {}
+
+    // OSDs
+    VolumeOSD {}
+
+    // Menus
+    // AppLauncher {}
+
 }

@@ -6,6 +6,7 @@ import QtQuick
 import "root:/"
 
 Singleton {
+  property alias running: memProc.running
   property int memUsage: 0
 
 
