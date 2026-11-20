@@ -18,7 +18,8 @@ documented in `Docs/Menus/Applauncher.md`, this file only covers the module.
 
 Recents live in `~/.local/state/quickshell/applauncher.ini`, category `AppLauncher`, key
 `recentIdsSerialized`, and are read once on `Component.onCompleted`. `clearRecents()` exists but
-nothing calls it, and only `toggle()` is exposed over IPC by the launcher.
+nothing calls it, and only `toggle()` is exposed over IPC by the launcher. To clear them, empty
+that file (`recentIdsSerialized=[]`) and reload the config, which makes the singleton re-read it.
 
 ## Traps
 

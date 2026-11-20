@@ -1,10 +1,11 @@
 # Sertraline Shell
 
 A Quickshell desktop shell for Hyprland: a top bar with a notch, a screen border with rounded
-corners, a volume OSD and an app launcher.
+corners, a volume OSD, an app launcher and a power menu.
 
-Per-area docs live next to this file: `bar/Bar.md`, `bar/borders.md`, `OSDs/VolumeOSD.md`,
-`Menus/Applauncher.md` and one file per module in `modules/`.
+Per-area docs live next to this file: `Hyprland.md`, `bar/Bar.md`, `bar/borders.md`,
+`OSDs/VolumeOSD.md`, `Menus/Applauncher.md`, `Menus/PowerDropdown.md` and one file per module in
+`modules/`.
 
 ## 1. Structure and approach
 
@@ -25,11 +26,12 @@ quickshell/
     BarText.qml        shared label style
   menus/
     AppLauncher.qml    the launcher window
+    PowerDropdown.qml  the power menu window
   OSDs/
     VolumeOSD.qml      volume overlay
   modules/             non-visual state, one singleton per readout
     CpuProc.qml RamProc.qml NetworkProc.qml Battery.qml
-    VolumelvlProc.qml OdSender.qml ApplauncherState.qml
+    VolumelvlProc.qml OdSender.qml ApplauncherState.qml PowerDropdownState.qml
     IpadButton.qml     the one widget that lives here
   plans/               empty, scratch space
 ```
@@ -123,6 +125,7 @@ ShellRoot {
     Border {}         // frame surface: border, corners and both bar ends
     VolumeOSD {}      // volume overlay
     AppLauncher {}    // app launcher window
+    PowerDropdown {}  // power menu window
 }
 ```
 

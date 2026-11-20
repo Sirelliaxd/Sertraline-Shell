@@ -36,12 +36,4 @@ My Quickshell Config
 - [OpenDisplay](https://opendisplay.app/docs/linux/install/) for ipad second screen button*
 
 >[!IMPORTANT]
->For blur to work on the top notch this needs to be included in hyprland config:
-```
-hl.layer_rule({
-	match = { namespace = "quickshell-notch" },
-
-	blur = true,
-	ignore_alpha = 0.2,
-})
-```
+>For blur, keybinds and hyprland related stuff refer to [Docs](Docs/Hyprland.md)

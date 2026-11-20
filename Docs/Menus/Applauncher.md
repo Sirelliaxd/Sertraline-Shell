@@ -51,6 +51,9 @@ It closes on `Escape`, on a click outside the panel, and after launching an app.
   `Theme.appLauncherPanelHeight`, which leaves the last row about 20 px above the panel's bottom
   edge. The rows stay inside the flare's silhouette because they start `Theme.appLauncherFlare`
   plus `Theme.appLauncherContentMargin` in from the panel item's edge.
+- The search box's text and placeholder are inset by `Theme.appLauncherSearchBoxRowMargin` from
+  the box's left edge, the same margin the app rows use, so the text lines up with the names
+  below it.
 - Shown and hidden by animating the panel's height: `0` while hidden, the full height while
   visible, over `Theme.appLauncherHeightAnimDuration` with `Theme.appLauncherHeightAnimType`.
   The bottom edge is anchored, so the panel grows upward: first a sliver of the bottom edge at
@@ -65,8 +68,10 @@ It closes on `Escape`, on a click outside the panel, and after launching an app.
 - Keys: `Up`/`Down` move the selection, `Enter` launches, `Escape` hides. Mouse wheel scrolls,
   hovering selects a row, clicking launches it.
 - Rows show the entry icon, falling back to the first letter of the name when the icon is
-  missing. Rows with a `genericName` show it under the name, and the five most recent apps get
-  a `recent` badge.
+  missing. "Missing" is decided with `Quickshell.iconPath(name, true)`: a themed icon that does
+  not resolve is still drawn by the image provider as a coloured placeholder square, which would
+  count as a loaded image, so the check is what makes the letter show. Rows with a `genericName`
+  show it under the name, and the five most recent apps get a `recent` badge.
 
 ## State and persistence
 

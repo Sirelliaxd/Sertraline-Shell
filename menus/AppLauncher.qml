@@ -214,16 +214,12 @@ PanelWindow {
                     }
                 }
 
-                Row {
-                    anchors {
-                        fill: parent
-                        leftMargin: Theme.appLauncherSearchBoxRowMargin
-                        rightMargin: Theme.appLauncherSearchBoxRowMargin
-                    }
-                    spacing: Theme.appLauncherSearchBoxRowSpacing
-                }
-
                 Item {
+                    anchors {
+                        left: parent.left
+                        leftMargin: Theme.appLauncherSearchBoxRowMargin
+                        verticalCenter: parent.verticalCenter
+                    }
                     width: parent.width - Theme.appLauncherInvContSubsFromWidth
                     height: parent.height
 
@@ -316,6 +312,11 @@ PanelWindow {
 
                     readonly property bool sel: root.selectedIndex === index
                     readonly property bool isRecent: !root.isSelected && ApplauncherState.recentIds.indexOf(modelData.id) !== -1 && ApplauncherState.recentIds.indexOf(modelData.id) < 5
+                    // an icon that does not resolve is drawn as a placeholder square, so treat
+                    // it as missing and let the letter show instead
+                    readonly property string iconSrc: modelData.icon !== "" && Quickshell.iconPath(modelData.icon, true) !== ""
+                        ? "image://icon/" + modelData.icon
+                        : ""
 
                     Rectangle {
                         anchors {
@@ -356,7 +357,7 @@ PanelWindow {
                                     anchors.centerIn: parent
                                     width: Theme.appLauncherIconImgSize
                                     height: Theme.appLauncherIconImgSize
-                                    source: modelData.icon !== "" ? "image://icon/" + modelData.icon : ""
+                                    source: appRow.iconSrc
                                     smooth: true
                                     mipmap: true
                                 }

@@ -3,6 +3,7 @@ import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 import "root:/"
+import "root:/modules"
 
   RowLayout {  // Left
     anchors {
@@ -13,7 +14,21 @@ import "root:/"
 
     spacing: 15
 
-    Text { text: "power"; color: "#e6e6e8"}
+    Text {  // power menu trigger
+      text: Theme.powerDropdownIcon
+      color: Theme.foreground
+      font {
+        family: Theme.fontFamily
+        pixelSize: Theme.fontSize
+        bold: true
+      }
+
+      MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: PowerDropdownState.toggle()
+      }
+    }
 
     Repeater {  // Workspaces
       model: 7

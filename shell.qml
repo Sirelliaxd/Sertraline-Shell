@@ -18,5 +18,6 @@ ShellRoot {
 
     // Menus
     AppLauncher {}
+    PowerDropdown {}
 
 }

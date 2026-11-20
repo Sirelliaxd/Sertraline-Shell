@@ -57,7 +57,6 @@ Singleton {
     readonly property real appLauncherSearchBoxFocusOpacity: 0.55
     readonly property int appLauncherSearchBoxFocusAnimDuration: 150
     readonly property int appLauncherSearchBoxRowMargin: 14
-    readonly property int appLauncherSearchBoxRowSpacing: 10
     readonly property int appLauncherInvContSubsFromWidth: 40
     readonly property string appLauncherSearchBoxText: "Search apps..."
     readonly property real appLauncherSearchBoxTextOpacity: 0.28
@@ -95,4 +94,19 @@ Singleton {
     readonly property color appLauncherRecentsGenericTxtColor: border
     readonly property int appLauncherBottomItemWidth: 1
     readonly property int appLauncherBottomitemHeight: 4
+    // -------
+    // Power Dropdown
+    readonly property string powerDropdownIcon: "\uf31f"      // artix logo, the bar trigger
+    readonly property int powerDropdownPanelWidth: 200
+    readonly property int powerDropdownItemHeight: 40
+    readonly property int powerDropdownItemRadius: 10
+    readonly property int powerDropdownContentMargin: 8
+    readonly property int powerDropdownMargin: 6       // gap to the frame and the bar
+    readonly property int powerDropdownRadius: 14
+    readonly property int powerDropdownIconBubbleSize: 28
+    readonly property int powerDropdownIconBubbleRadius: 8
+    readonly property int powerDropdownIconSize: 15
+    readonly property int powerDropdownFontSize: 13
+    readonly property int powerDropdownAnimDuration: 220
+    readonly property real powerDropdownAnimType: Easing.OutCubic
 }

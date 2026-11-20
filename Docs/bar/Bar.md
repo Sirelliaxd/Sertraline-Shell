@@ -47,8 +47,8 @@ The ends sit in the frame surface, so they are blurred by whatever rule matches 
 - `Left.qml`: a `Repeater` of 7 workspace dots, each a `BarText` that shows a filled glyph
   when `Hyprland.focusedWorkspace.id` matches, a hollow one when the workspace exists in
   `Hyprland.workspaces.values`, and a dim one when it does not. Clicking one dispatches
-  `hl.dsp.focus({ workspace = "<n>" })`. There is also a hardcoded `power` label with a fixed
-  color.
+  `hl.dsp.focus({ workspace = "<n>" })`. Before the dots sits the Artix glyph
+  (`Theme.powerDropdownIcon`), which toggles the power menu, see `Docs/Menus/PowerDropdown.md`.
 - `Center.qml`: a `SystemClock` at `precision: Seconds`. Seconds sit to the left of the time
   and the date to the right, both at `Theme.fontSize * 0.6`, baseline aligned to the `hh:mm`
   `BarText` in the middle.
