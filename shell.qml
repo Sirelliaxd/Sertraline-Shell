@@ -18,6 +18,6 @@ ShellRoot {
     VolumeOSD {}
 
     // Menus
-    // AppLauncher {}
+    AppLauncher {}
 
 }

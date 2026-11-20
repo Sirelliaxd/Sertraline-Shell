@@ -1,10 +1,11 @@
-import Singleton
+pragma Singleton
+
 import QtQuick
 import QtCore
 import Quickshell
 import "root:/"
 
-QtObject {
+Singleton {
     id: root
 
     property bool launcherVisible: false
@@ -13,6 +14,8 @@ QtObject {
 
     property var _settings: Settings {
         category: "AppLauncher"
+        // QtCore Settings needs a path; Quickshell sets no org name
+        location: StandardPaths.writableLocation(StandardPaths.GenericStateLocation) + "/quickshell/applauncher.ini"
         property string recentIdsSerialized: "[]"
     }
 

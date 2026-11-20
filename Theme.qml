@@ -76,8 +76,9 @@ Singleton {
     readonly property int appLauncherIconBubbleRadius: 9
     readonly property int appLauncherIconBubbleAnimDuration: 100
     readonly property int appLauncherIconImgSize: 22
+    readonly property int appLauncherIconImgFallbackTxtSize: 14
     readonly property color appLauncherIconFallbackColorActive: foreground
-    readonly property color appLauncherIconFallbackColoraInctive: inactive
+    readonly property color appLauncherIconImgFallbackColorInactive: inactive
     readonly property int appLauncherIconFallbackAnimDuration: 100
     readonly property int appLauncherAppNamesSpacing: 2
     readonly property int appLauncherAppNamesFontSize: 13
