@@ -31,6 +31,20 @@ ShellRoot {
         }
     }
 
+    IpcHandler {
+        target: "networkdropdown"
+        function toggle() {
+            NetworkMenuState.toggle();
+        }
+    }
+
+    IpcHandler {
+        target: "bluetoothdropdown"
+        function toggle() {
+            BluetoothMenuState.toggle();
+        }
+    }
+
     // Refresh CPU/RAM every 2s
     RefreshTimer {}
 
@@ -48,6 +62,8 @@ ShellRoot {
     property bool launcherAlive: false
     property bool powerAlive: false
     property bool volumeAlive: false
+    property bool networkAlive: false
+    property bool bluetoothAlive: false
 
     LazyLoader {
         id: launcherLoader
@@ -111,6 +127,50 @@ ShellRoot {
                 volumeAlive = true;
             } else {
                 volumeUnload.start();
+            }
+        }
+    }
+
+    LazyLoader {
+        id: bluetoothLoader
+        active: bluetoothAlive
+        BluetoothDropdown {}
+    }
+    Timer {
+        id: bluetoothUnload
+        interval: Theme.bluetoothDropdownAnimDuration + Theme.menuUnloadGrace
+        onTriggered: bluetoothAlive = false
+    }
+    Connections {
+        target: BluetoothMenuState
+        function onVisibleChanged() {
+            if (BluetoothMenuState.visible) {
+                bluetoothUnload.stop();
+                bluetoothAlive = true;
+            } else {
+                bluetoothUnload.start();
+            }
+        }
+    }
+
+    LazyLoader {
+        id: networkLoader
+        active: networkAlive
+        NetworkDropdown {}
+    }
+    Timer {
+        id: networkUnload
+        interval: Theme.networkDropdownAnimDuration + Theme.menuUnloadGrace
+        onTriggered: networkAlive = false
+    }
+    Connections {
+        target: NetworkMenuState
+        function onVisibleChanged() {
+            if (NetworkMenuState.visible) {
+                networkUnload.stop();
+                networkAlive = true;
+            } else {
+                networkUnload.start();
             }
         }
     }

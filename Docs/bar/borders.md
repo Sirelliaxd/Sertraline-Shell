@@ -50,9 +50,10 @@ namespace `quickshell-border`:
 - the two bar ends, see `Docs/bar/Bar.md`,
 - `mask: Region { item: barInput }`, an invisible item covering the bar strip, so only the bar
   takes input and the frame and corners are click-through,
-- a `Binding` writing the volume widget's centre x to `VolumeDropdownState.anchorX`, so the volume
-  menu can hang under that widget (the menu samples it once when it opens; a live read would move the
-  panel as the bar's text widths change). It reads `rightEnd.x`, `rightContent.x` and the widget's
+- a `Binding` writing the volume widget's centre x to `VolumeDropdownState.anchorX`, and a second
+  one writing the network widget's centre x to `NetworkMenuState.anchorX`, so those menus can open
+  out of those widgets (each menu samples its anchor once when it opens; a live read would move the
+  panel as the bar's text widths change). They read `rightEnd.x`, `rightContent.x` and the widget's
   own `x` and `width`, which are all real properties, rather than calling `mapToItem` on the widget: a
   binding is only re-evaluated for properties it actually reads, and the reads inside a C++ call are
   invisible to it, so the anchor would go stale as the bar's labels change width.

@@ -1,11 +1,12 @@
 # Sertraline Shell
 
 A Quickshell desktop shell for Hyprland: a top bar with a notch, a screen border with rounded
-corners, a volume OSD, an app launcher, a power menu and a volume menu.
+corners, a volume OSD, an app launcher, a power menu, a volume menu and a network menu.
 
 Per-area docs live next to this file: `Hyprland.md`, `bar/Bar.md`, `bar/borders.md`,
-`OSDs/VolumeOSD.md`, `Menus/Applauncher.md`, `Menus/PowerDropdown.md`, `Menus/VolumeDropdown.md`
-and one file per module in `modules/`.
+`OSDs/VolumeOSD.md`, `Menus/Applauncher.md`, `Menus/PowerDropdown.md`, `Menus/VolumeDropdown.md`,
+`Menus/NetworkDropdown.md`, `Menus/BluetoothDropdown.md`, `PrivilegedActions.md`,
+`NetworkDropdown-Tutorial.md` and one file per module in `modules/`.
 
 ## 1. Structure and approach
 
@@ -22,6 +23,7 @@ quickshell/
     Corners.qml        places the four corner shapes inside that surface
     Corner.qml         one concave corner
     VolumeSlider.qml   one draggable level bar, used by the volume menu
+    NetGraph.qml       the network menu's throughput graph
   bar/                 bar sections (contents of the bar windows)
     Left.qml Center.qml Right.qml
     BarText.qml        shared label style
@@ -29,13 +31,19 @@ quickshell/
     AppLauncher.qml    the launcher window
     PowerDropdown.qml  the power menu window
     VolumeDropdown.qml the volume menu window
+    NetworkDropdown.qml the network menu window
+    BluetoothDropdown.qml the bluetooth menu window
   OSDs/
     VolumeOSD.qml      volume overlay
   modules/             non-visual state, one singleton per readout
     CpuProc.qml RamProc.qml NetworkProc.qml Battery.qml
     VolumelvlProc.qml OdSender.qml ApplauncherState.qml PowerDropdownState.qml
-    VolumeDropdownState.qml
+    VolumeDropdownState.qml NetworkMenuState.qml BluetoothMenuState.qml
+    NetInfo.qml NetLoad.qml BlueInfo.qml
     IpadButton.qml     the one widget that lives here
+  system/polkit/       host-side installables, not read by the shell
+    org.sertraline.network.policy    polkit actions for macchanger and iw
+    49-sertraline-network.rules      grants them without a password
   plans/               empty, scratch space
 ```
 
@@ -92,8 +100,9 @@ Structure:
 - Everything is `readonly`. Nothing in the shell writes to `Theme`, so the values are constants
   at runtime and cannot drift from what is declared.
 - The file is grouped by consumer, separated by `// -------` rules: colors, font, then a
-  `// TaskBar` block, then `// App Launcher`, `// Power Dropdown` and `// Volume Dropdown` blocks.
-  Adding a feature means adding a block here, prefixed with that feature's name.
+  `// TaskBar` block, then `// App Launcher`, `// Power Dropdown`, `// Volume Dropdown` and
+  `// Network Dropdown` blocks. Adding a feature means adding a block here, prefixed with that
+  feature's name.
 - Names are `<feature><Part><Property>`, for example `appLauncherPanelWidth`,
   `appLauncherHeightAnimDuration`, `appLauncherAppNamesFontSize`. Prefixes are the only
   namespace the file has, and they are what keep it navigable as it grows.
@@ -123,7 +132,7 @@ list of children:
 
 ```qml
 ShellRoot {
-    IpcHandler {}     // applauncher, powerdropdown and volumedropdown targets, present whether or not a menu is open
+    IpcHandler {}     // applauncher, powerdropdown, volumedropdown and networkdropdown targets
     RefreshTimer {}   // drives the CPU and RAM samples
     TaskBar {}        // the notch window, one per screen
     Border {}         // frame surface: border, corners and both bar ends
@@ -131,6 +140,7 @@ ShellRoot {
     LazyLoader {}     // holds AppLauncher, built while the launcher is open
     LazyLoader {}     // holds PowerDropdown, built while the power menu is open
     LazyLoader {}     // holds VolumeDropdown, built while the volume menu is open
+    LazyLoader {}     // holds NetworkDropdown, built while the network menu is open
 }
 ```
 
@@ -153,7 +163,7 @@ Points worth knowing:
   closed menu keeps no layer surface and no window: keeping the launcher and the power menu alive
   while closed was measured at about 150 MB of RSS. The flag is never derived from the open state,
   because a derived value goes false in the same instant the state does and the window is gone
-  before it can animate out. All three menus animate in and out. The `IpcHandler`s live at this
+  before it can animate out. All four menus animate in and out. The `IpcHandler`s live at this
   level rather than in the menu windows, because a handler inside a lazily built window would only
   exist while that menu was open, which would leave the keybinds with nothing to call.
 

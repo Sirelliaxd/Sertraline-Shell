@@ -17,7 +17,8 @@ Singleton {
     readonly property color inactive: "#787c99"  // unselected label colour
     readonly property color red: "#f7768e"  // alert colour, low battery
     readonly property color blue: "#7aa2f7"  // accent, currently unused
-    readonly property color yellow: "#e0af68"  // accent, currently unused
+    readonly property color yellow: "#e0af68"  // accent, upload line, i2p
+    readonly property color purple: "#bb9af7"  // accent, tor
     readonly property color green: "#41a6b5"  // accent, currently unused
 
     // Font
@@ -149,4 +150,185 @@ Singleton {
     readonly property string volumeDropdownStreamsIcon: "󰎆"  // music note, stream rows
     readonly property string volumeDropdownChevronClosed: "󰅀"  // list closed
     readonly property string volumeDropdownChevronOpen: "󰅃"  // list open
+    // -------
+    // Network Dropdown
+    readonly property int networkDropdownPanelWidth: 400  // panel width
+    readonly property int networkDropdownMargin: powerDropdownMargin  // same gap as the other menus
+    readonly property int networkDropdownRadius: powerDropdownRadius  // panel corner radius
+    readonly property int networkDropdownContentMargin: powerDropdownContentMargin  // content inset
+    readonly property int networkDropdownRowHeight: powerDropdownItemHeight  // height of one row
+    readonly property int networkDropdownRowRadius: powerDropdownItemRadius  // row highlight radius
+    readonly property int networkDropdownIconBubbleSize: powerDropdownIconBubbleSize  // icon bubble size
+    readonly property int networkDropdownIconBubbleRadius: powerDropdownIconBubbleRadius  // icon bubble radius
+    readonly property int networkDropdownIconSize: powerDropdownIconSize  // glyph size
+    readonly property int networkDropdownFontSize: powerDropdownFontSize  // row text size
+    readonly property int networkDropdownAnimDuration: powerDropdownAnimDuration  // reveal duration, ms
+    readonly property real networkDropdownAnimType: powerDropdownAnimType  // reveal easing
+    readonly property int networkDropdownLabelWidth: 104  // label column, after the bubble
+    readonly property int networkDropdownEntryRowHeight: 30  // one entry in a list
+    readonly property int networkDropdownEntryIndent: 38  // list inset, under its bubble
+    readonly property int networkDropdownNicHeight: 24  // the active interface line
+    readonly property int networkDropdownSsidMax: 18  // longest network name drawn up there
+    readonly property int networkDropdownChildIndent: 14  // inset of a dropdown's children
+    readonly property int networkDropdownPortGroupIndent: 20  // loopback / external heading
+    readonly property int networkDropdownPortSubIndent: 36  // listening / outgoing / connection
+    readonly property int networkDropdownPortItemIndent: 52  // one socket
+    readonly property int networkDropdownIfaceNameSize: 15  // interface name, bigger than a row
+    readonly property int networkDropdownStatHeight: 46  // one cell of the info group
+    readonly property int networkDropdownStatSpacing: 6  // gap between those cells
+    readonly property int networkDropdownGroupPadding: 6  // inset of the info group bubble
+    readonly property int networkDropdownLabelSize: 11  // the small label above a stat value
+    readonly property int networkDropdownSeparatorMargin: 6  // space around the section divider
+    readonly property color networkDropdownSeparatorColor: border  // the section divider
+    readonly property int networkDropdownMaxContentHeight: volumeDropdownMaxContentHeight  // taller content scrolls
+    readonly property int networkDropdownGraphHeight: 46  // network load graph
+    readonly property int networkDropdownGraphSamples: 60  // samples kept, one per interval
+    readonly property int networkDropdownGraphInterval: 1000  // sample interval, ms
+    readonly property color networkDropdownGraphRxColor: blue  // download line
+    readonly property color networkDropdownGraphTxColor: yellow  // upload line
+    readonly property color networkDropdownGraphGridColor: border  // graph baseline
+    readonly property color networkDropdownDimColor: inactive  // values, entry names, rates
+    readonly property string networkDropdownText: "network"  // the connected network
+    readonly property string networkDropdownLocalText: "local"  // local IPv4
+    readonly property string networkDropdownPublicText: "public"  // public IPv4
+    readonly property string networkDropdownWifiText: "wifi"  // radio toggle
+    readonly property string networkDropdownNetworksText: "networks"  // scan list
+    readonly property string networkDropdownConnectionsText: "connections"  // saved connections
+    readonly property string networkDropdownEditText: "edit"  // connection editor
+    readonly property string networkDropdownVpnText: "vpn"  // Mullvad state
+    readonly property string networkDropdownRandomMacText: "random mac"  // MAC randomisation toggle
+    readonly property string networkDropdownMonitorText: "monitor mode"  // wifi mode toggle
+    readonly property string networkDropdownPortsText: "open ports"  // listening sockets
+    readonly property string networkDropdownInterfacesText: "interfaces"  // interface list
+    readonly property string networkDropdownLoadText: "load"  // throughput graph
+    readonly property string networkDropdownRevealText: "show ip/mac"  // reveal the covered values
+    readonly property string networkDropdownMaskChar: "•"  // what a covered value is made of
+    readonly property string networkDropdownRescanText: "rescan"  // first entry of the scan list
+    readonly property string networkDropdownNoNetworksText: "no networks"  // empty scan list
+    readonly property string networkDropdownNoPortsText: "no listeners"  // empty port list
+    readonly property string networkDropdownLoopbackText: "loopback"  // port group, 127.x and ::1
+    readonly property string networkDropdownExternalText: "external"  // port group, everything else
+    readonly property string networkDropdownListeningText: "listening"  // LISTEN / UNCONN sockets
+    readonly property string networkDropdownOutgoingText: "outgoing"  // established, we started it
+    readonly property string networkDropdownConnectionText: "connection"  // established, they did
+    readonly property string networkDropdownTorText: "tor"  // footer daemon
+    readonly property string networkDropdownI2pText: "i2p"  // footer daemon
+    readonly property string networkDropdownRunningText: "running"  // daemon up
+    readonly property string networkDropdownStoppedText: "stopped"  // daemon down
+    readonly property string networkDropdownOnText: "on"  // toggle value
+    readonly property string networkDropdownUpText: "up"  // interface carries a link
+    readonly property string networkDropdownDownText: "down"  // it does not
+    readonly property string networkDropdownOffText: "off"  // toggle value
+    readonly property string networkDropdownEmptyText: "--"  // value while unknown
+    readonly property string networkDropdownIcon: "󰖩"  // wifi, network row
+    readonly property string networkDropdownIconOff: "󰖪"  // wifi off
+    readonly property string networkDropdownLocalIcon: "󰩠"  // local address
+    readonly property string networkDropdownPublicIcon: "󰖟"  // public address
+    readonly property string networkDropdownMacIcon: "󰒋"  // interface
+    readonly property string networkDropdownNetworksIcon: "󰑫"  // scan
+    readonly property string networkDropdownConnectionsIcon: "󰌷"  // link
+    readonly property string networkDropdownEditIcon: "󰏫"  // pencil
+    readonly property string networkDropdownVpnIcon: "󰒘"  // shield
+    readonly property string networkDropdownRandomMacIcon: "󰒝"  // shuffle
+    readonly property string networkDropdownMonitorIcon: "󰈈"  // eye
+    readonly property string networkDropdownPortsIcon: "󰈀"  // ethernet
+    readonly property string networkDropdownInterfacesIcon: "󰌗"  // md-lan
+    readonly property string networkDropdownIfaceOnIcon: "󰌘"  // lan-connect, the interface is connected
+    readonly property string networkDropdownIfaceOffIcon: "󰌙"  // lan-disconnect, it is not
+    readonly property string networkDropdownTorIcon: "󰗹"  // md-incognito
+    readonly property string networkDropdownTorOffIcon: "󰁵"  // md-incognito_off
+    readonly property string networkDropdownI2pIcon: "󰊠"  // md-ghost, the invisible internet
+    readonly property string networkDropdownI2pOffIcon: "󰧵"  // md-ghost_off
+    readonly property string networkDropdownLoadIcon: "󰄧"  // md-chart_areaspline
+    readonly property string networkDropdownRevealIcon: "󰈉"  // eye-off, reveal toggle
+    readonly property string networkDropdownLockIcon: "󰌾"  // secured network
+    readonly property string networkDropdownChevronClosed: volumeDropdownChevronClosed  // list closed
+    readonly property string networkDropdownChevronOpen: volumeDropdownChevronOpen  // list open
+
+    // Bluetooth Dropdown
+    readonly property int bluetoothDropdownPanelWidth: 400  // panel width
+    readonly property int bluetoothDropdownMargin: networkDropdownMargin  // gap to the frame and the bar
+    readonly property int bluetoothDropdownRadius: networkDropdownRadius  // panel corner radius
+    readonly property int bluetoothDropdownContentMargin: networkDropdownContentMargin  // content inset
+    readonly property int bluetoothDropdownRowHeight: networkDropdownRowHeight  // one row
+    readonly property int bluetoothDropdownRowRadius: networkDropdownRowRadius  // row highlight radius
+    readonly property int bluetoothDropdownIconBubbleSize: networkDropdownIconBubbleSize  // icon bubble
+    readonly property int bluetoothDropdownIconBubbleRadius: networkDropdownIconBubbleRadius  // bubble radius
+    readonly property int bluetoothDropdownIconSize: networkDropdownIconSize  // glyph size
+    readonly property int bluetoothDropdownFontSize: networkDropdownFontSize  // row text
+    readonly property int bluetoothDropdownLabelSize: networkDropdownLabelSize  // small labels
+    readonly property int bluetoothDropdownLabelWidth: networkDropdownLabelWidth  // label column
+    readonly property int bluetoothDropdownEntryRowHeight: networkDropdownEntryRowHeight  // one entry
+    readonly property int bluetoothDropdownEntryIndent: networkDropdownEntryIndent  // entry text inset
+    readonly property int bluetoothDropdownChildIndent: networkDropdownChildIndent  // children of a dropdown
+    readonly property int bluetoothDropdownGroupPadding: networkDropdownGroupPadding  // info group inset
+    readonly property int bluetoothDropdownStatHeight: networkDropdownStatHeight  // one info cell
+    readonly property int bluetoothDropdownStatSpacing: networkDropdownStatSpacing  // gap between cells
+    readonly property int bluetoothDropdownSeparatorMargin: networkDropdownSeparatorMargin  // divider space
+    readonly property color bluetoothDropdownSeparatorColor: border  // the section divider
+    readonly property color bluetoothDropdownDimColor: inactive  // values and entry names
+    readonly property int bluetoothDropdownNicHeight: networkDropdownNicHeight  // the centred line
+    readonly property int bluetoothDropdownNameMax: 22  // longest device or alias name drawn there
+    readonly property int bluetoothDropdownDeviceNameSize: networkDropdownIfaceNameSize  // device name, bigger than a row
+    readonly property int bluetoothDropdownDeviceLabelWidth: 185  // device name column, wider than a row label
+    readonly property int bluetoothDropdownMaxContentHeight: networkDropdownMaxContentHeight  // taller content scrolls
+    readonly property int bluetoothDropdownAnimDuration: networkDropdownAnimDuration  // reveal duration, ms
+    readonly property real bluetoothDropdownAnimType: networkDropdownAnimType  // reveal easing
+    // -------
+    // Bluetooth Dropdown: strings
+    readonly property string bluetoothDropdownAdapterText: "adapter"  // adapter id, e.g. hci0
+    readonly property string bluetoothDropdownAliasText: "alias"  // what the adapter calls itself
+    readonly property string bluetoothDropdownStateText: "state"  // enabled / disabled
+    readonly property string bluetoothDropdownDevicesText: "devices"  // how many are paired
+    readonly property string bluetoothDropdownPowerText: "power"  // adapter on/off
+    readonly property string bluetoothDropdownPairableText: "pairable"  // accepts new pairings
+    readonly property string bluetoothDropdownDiscoverableText: "discoverable"  // visible to others
+    readonly property string bluetoothDropdownScanText: "scan"  // discovery list
+    readonly property string bluetoothDropdownRescanText: "rescan"  // first entry of that list
+    readonly property string bluetoothDropdownPairedText: "paired devices"  // section heading
+    readonly property string bluetoothDropdownFoundText: "found"  // section heading, discovery
+    readonly property string bluetoothDropdownConnectText: "connect"  // device action
+    readonly property string bluetoothDropdownDisconnectText: "disconnect"  // device action
+    readonly property string bluetoothDropdownTrustText: "trust"  // device action
+    readonly property string bluetoothDropdownUntrustText: "untrust"  // device action
+    readonly property string bluetoothDropdownPinText: "pin"  // device action, keep it on top
+    readonly property string bluetoothDropdownUnpinText: "unpin"  // device action
+    readonly property string bluetoothDropdownForgetText: "forget"  // device action, drops the pairing
+    readonly property string bluetoothDropdownPairText: "pair"  // device action, on a found device
+    readonly property string bluetoothDropdownOnText: "on"  // toggle value
+    readonly property string bluetoothDropdownOffText: "off"  // toggle value
+    readonly property string bluetoothDropdownEmptyText: "--"  // value while unknown
+    readonly property string bluetoothDropdownNoDevicesText: "nothing paired"  // empty paired list
+    readonly property string bluetoothDropdownNoneFoundText: "nothing found"  // empty discovery list
+    readonly property string bluetoothDropdownConnectedText: "connected"  // device status
+    readonly property string bluetoothDropdownTrustedText: "trusted"  // device status
+    readonly property string bluetoothDropdownPinnedText: "pinned"  // device status
+    readonly property string bluetoothDropdownNoAdapterText: "no adapter"  // no bluetooth hardware
+    // -------
+    // Bluetooth Dropdown: icons
+    readonly property string bluetoothDropdownIcon: "󰂯"  // md-bluetooth, the bar trigger
+    readonly property string bluetoothDropdownOffIcon: "󰂲"  // md-bluetooth_off
+    readonly property string bluetoothDropdownAdapterIcon: "󰂳"  // md-bluetooth_settings
+    readonly property string bluetoothDropdownDeviceIcon: "󰂱"  // md-bluetooth_connect, unknown device kind
+    readonly property string bluetoothDropdownHeadsetIcon: "󰋎"  // md-headset
+    readonly property string bluetoothDropdownHeadphonesIcon: "󰋋"  // md-headphones
+    readonly property string bluetoothDropdownSpeakerIcon: "󰓃"  // md-speaker
+    readonly property string bluetoothDropdownKeyboardIcon: "󰌌"  // md-keyboard
+    readonly property string bluetoothDropdownMouseIcon: "󰍽"  // md-mouse
+    readonly property string bluetoothDropdownGamepadIcon: "󰊖"  // md-gamepad
+    readonly property string bluetoothDropdownPhoneIcon: "󰏲"  // md-phone
+    readonly property string bluetoothDropdownConnectIcon: "󰌷"  // md-link
+    readonly property string bluetoothDropdownDisconnectIcon: "󰌸"  // md-link_off
+    readonly property string bluetoothDropdownTrustIcon: "󰕥"  // md-shield_check
+    readonly property string bluetoothDropdownUntrustIcon: "󰕥"  // md-shield_check, dimmed state
+    readonly property string bluetoothDropdownPinIcon: "󰓒"  // md-star_outline
+    readonly property string bluetoothDropdownUnpinIcon: "󰓑"  // md-star_off
+    readonly property string bluetoothDropdownForgetIcon: "󰆴"  // md-delete
+    readonly property string bluetoothDropdownPairIcon: "󰂱"  // md-bluetooth_connect
+    readonly property string bluetoothDropdownScanIcon: "󰍉"  // md-magnify
+    readonly property string bluetoothDropdownPowerIcon: "󰒓"  // md-cog
+    readonly property string bluetoothDropdownBatteryIcon: "󰁹"  // md-battery
+    readonly property color bluetoothDropdownPinnedColor: yellow  // the star on a pinned device
+    readonly property string bluetoothDropdownChevronClosed: volumeDropdownChevronClosed  // list closed
+    readonly property string bluetoothDropdownChevronOpen: volumeDropdownChevronOpen  // list open
 }

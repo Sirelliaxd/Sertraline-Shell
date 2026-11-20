@@ -54,9 +54,10 @@ The ends sit in the frame surface, so they are blurred by whatever rule matches 
   `BarText` in the middle.
 - `Right.qml`, left to right: `IpadButton`, `NetworkProc.barTxt`, a hardcoded `bt` label,
   `VolumelvlProc.barTxt`, `RamProc.barTxt`, `CpuProc.barTxt`, and `Battery.barTxt`, which turns
-  `Theme.red` when `Battery.level` is 25 or less. The volume readout carries a `MouseArea` that
-  toggles the volume menu, and the section exposes it as `volumeWidget`, which is how
-  `components/Border.qml` finds it to place that menu, see `Docs/Menus/VolumeDropdown.md`.
+  `Theme.red` when `Battery.level` is 25 or less. The network and volume readouts carry a
+  `MouseArea` that toggles their menu, and the section exposes both as `networkWidget` and
+  `volumeWidget`, which is how `components/Border.qml` finds them to place those menus, see
+  `Docs/Menus/NetworkDropdown.md` and `Docs/Menus/VolumeDropdown.md`.
 
 ## Adding an entry
 

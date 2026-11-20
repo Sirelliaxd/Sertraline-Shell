@@ -81,6 +81,20 @@ Scope {
           value: rightEnd.x + rightContent.x + rightContent.volumeWidget.x + rightContent.volumeWidget.width / 2
         }
 
+        // Same for the network widget, which the network menu opens out of.
+        Binding {
+          target: NetworkMenuState
+          property: "anchorX"
+          value: rightEnd.x + rightContent.x + rightContent.networkWidget.x + rightContent.networkWidget.width / 2
+        }
+
+        // Same for the bluetooth widget, which the bluetooth menu opens out of.
+        Binding {
+          target: BluetoothMenuState
+          property: "anchorX"
+          value: rightEnd.x + rightContent.x + rightContent.btWidget.x + rightContent.btWidget.width / 2
+        }
+
         Rectangle { // bottom
           anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
           height: root.thickness
