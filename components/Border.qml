@@ -4,6 +4,7 @@ import QtQuick
 
 import "root:/"
 import "root:/bar"
+import "root:/modules"
 
 Scope {
   id: root
@@ -70,6 +71,14 @@ Scope {
           id: barInput
           anchors { top: parent.top; left: parent.left; right: parent.right }
           height: Theme.barHeight
+        }
+
+        // Screen x of the volume widget's centre, for the volume menu. This window and
+        // the menu window are anchored the same way, so their coordinates agree.
+        Binding {
+          target: VolumeDropdownState
+          property: "anchorX"
+          value: rightEnd.x + rightContent.x + rightContent.volumeWidget.x + rightContent.volumeWidget.width / 2
         }
 
         Rectangle { // bottom

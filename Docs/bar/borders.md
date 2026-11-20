@@ -49,7 +49,13 @@ namespace `quickshell-border`:
   `borderBottom`, `borderLeft` and `borderRight` (`Theme.borderThickness`), radius 14,
 - the two bar ends, see `Docs/bar/Bar.md`,
 - `mask: Region { item: barInput }`, an invisible item covering the bar strip, so only the bar
-  takes input and the frame and corners are click-through.
+  takes input and the frame and corners are click-through,
+- a `Binding` writing the volume widget's centre x to `VolumeDropdownState.anchorX`, so the volume
+  menu can hang under that widget (the menu samples it once when it opens; a live read would move the
+  panel as the bar's text widths change). It reads `rightEnd.x`, `rightContent.x` and the widget's
+  own `x` and `width`, which are all real properties, rather than calling `mapToItem` on the widget: a
+  binding is only re-evaluated for properties it actually reads, and the reads inside a C++ call are
+  invisible to it, so the anchor would go stale as the bar's labels change width.
 
 `Corner.qml` draws the canonical top-left corner only: a square minus a quarter circle, radius
 `radius`, filled with `color`. `flipX` and `flipY` mirror it with a `Scale` transform to cover
@@ -62,7 +68,9 @@ the other three positions, so all four corners stay consistent by construction. 
   it. Windows that ignore the reserved area, fullscreen video for example, get a 12 px frame
   around them. Before the merge the frame was on `WlrLayer.Bottom` and stayed hidden.
 - Corner colors come from `Corners.qml` (`Theme.background` by default), not from
-  `Corner.qml`'s own default, so changing the default there alone changes nothing.
+  `Corner.qml`'s own default, so changing the default there alone changes nothing. That default
+  used to read `backgroundTransparent`, a misspelled name the theme never had, and is now
+  `Theme.bgTs`; it stays unused either way.
 - The frame, the corners and the bar ends all read `Theme.barHeight` and
   `Theme.borderThickness`. Changing one of the two values moves all of them together, changing
   only one leaves a gap.

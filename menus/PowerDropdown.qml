@@ -11,12 +11,6 @@ import "root:/modules"
 PanelWindow {
   id: root
 
-  IpcHandler {
-    target: "powerdropdown"
-    function toggle() {
-      PowerDropdownState.toggle();
-    }
-  }
 
   WlrLayershell.layer: WlrLayer.Overlay
   WlrLayershell.keyboardFocus: PowerDropdownState.visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
@@ -70,11 +64,21 @@ PanelWindow {
     target: PowerDropdownState
 
     function onVisibleChanged() {
-      if (PowerDropdownState.visible) {
-        root.selectedIndex = 0;
-        panel.forceActiveFocus();
-      }
+      if (PowerDropdownState.visible)
+        root.onOpened();
     }
+  }
+
+  // The window is built when it opens, so it also has to set itself up here
+  Component.onCompleted: {
+    if (PowerDropdownState.visible)
+      root.onOpened();
+  }
+
+  function onOpened() {
+    selectedIndex = 0;
+    // Deferred: the window is created by the loader, so it is not up yet here
+    Qt.callLater(panel.forceActiveFocus);
   }
 
   MouseArea {
@@ -93,8 +97,11 @@ PanelWindow {
     }
 
     // Opens like a square growing out of its top left corner
-    width: PowerDropdownState.visible ? root.panelW : 0
-    height: PowerDropdownState.visible ? root.panelH : 0
+    // `shown` flips after creation so a window built on demand still animates open
+    property bool shown: false
+    Component.onCompleted: shown = true
+    width: PowerDropdownState.visible && panel.shown ? root.panelW : 0
+    height: PowerDropdownState.visible && panel.shown ? root.panelH : 0
     clip: true
     focus: true
 

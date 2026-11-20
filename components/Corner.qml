@@ -7,7 +7,7 @@ Shape {
   id: root
 
   property int radius: 14
-  property color color: Theme.backgroundTransparent
+  property color color: Theme.bgTs  // unused default: Corners.qml always sets it
   // Canonical corner is top-left. Mirror it for the others.
   property bool flipX: false
   property bool flipY: false

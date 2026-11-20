@@ -7,6 +7,8 @@
 My Quickshell Config 
 - Bar 
 - App Launcher
+- Power Menu
+- Volume Menu
 - Notification center* 
 - Clipboard manager* 
 - Theme switcher* 

@@ -11,13 +11,6 @@ PanelWindow {
     id: root
     property var screen
 
-    IpcHandler {
-      target: "applauncher"
-      function toggle() {
-        ApplauncherState.launcherVisible = !ApplauncherState.launcherVisible;
-      }
-    }
-
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: ApplauncherState.launcherVisible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
     WlrLayershell.namespace: "quickshell-app-launcher"
@@ -99,13 +92,23 @@ PanelWindow {
     Connections {
         target: ApplauncherState
         function onLauncherVisibleChanged() {
-            if (ApplauncherState.launcherVisible) {
-                searchInput.text = "";
-                root.searchQuery = "";
-                root.selectedIndex = 0;
-                searchInput.forceActiveFocus();
-            }
+            if (ApplauncherState.launcherVisible)
+                root.onOpened();
         }
+    }
+
+    // The window is built when it opens, so it also has to set itself up here
+    Component.onCompleted: {
+        if (ApplauncherState.launcherVisible)
+            root.onOpened();
+    }
+
+    function onOpened() {
+        searchInput.text = "";
+        root.searchQuery = "";
+        root.selectedIndex = 0;
+        // Deferred: the window is created by the loader, so it is not up yet here
+        Qt.callLater(searchInput.forceActiveFocus);
     }
 
     // colors
@@ -132,7 +135,10 @@ PanelWindow {
         width: root.panelW + 2 * Theme.appLauncherFlare   // the bottom curve flares past the body
         // Grows up out of the bottom edge: the flare's outer corners are what is visible
         // first, then the body rises behind them
-        height: ApplauncherState.launcherVisible ? root.panelH : 0
+        // `shown` flips after creation so a window built on demand still animates open
+        property bool shown: false
+        Component.onCompleted: shown = true
+        height: ApplauncherState.launcherVisible && panel.shown ? root.panelH : 0
         Behavior on height {
             NumberAnimation {
                 duration: Theme.appLauncherHeightAnimDuration

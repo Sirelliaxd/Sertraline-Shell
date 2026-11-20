@@ -7,6 +7,9 @@ import "root:/modules"
 
 
 RowLayout {  // Right
+  // Where the volume widget sits, so the volume menu can hang under it
+  property alias volumeWidget: volumeTxt
+
   anchors {
     right: parent.right
     verticalCenter: parent.verticalCenter
@@ -18,7 +21,16 @@ RowLayout {  // Right
   IpadButton {} // OdSender ( ipad screen )
   BarText { text: NetworkProc.barTxt } // Network
   Text { text: "bt"; color: "#e6e6e8"}
-  BarText { text: VolumelvlProc.barTxt  } // Volume
+  BarText { // Volume, click toggles the volume menu
+    id: volumeTxt
+    text: VolumelvlProc.barTxt
+
+    MouseArea {
+      anchors.fill: parent
+      cursorShape: Qt.PointingHandCursor
+      onClicked: VolumeDropdownState.toggle()
+    }
+  }
   BarText { text: RamProc.barTxt  } // RAM
   BarText { text: CpuProc.barTxt  } // CPU
   Text { // Battery

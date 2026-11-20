@@ -34,6 +34,18 @@ It closes on `Escape`, on a click outside the panel, and after launching an app.
   panel's bottom edge is the screen edge itself, drawn over the bottom border bar.
 - `mask` is empty while hidden, so the surface takes no input; keyboard focus is `Exclusive`
   only while `ApplauncherState.launcherVisible` is true.
+- The window is built on demand: `shell.qml` holds it in a `LazyLoader` driven by an explicit
+  `launcherAlive` flag, set when the launcher opens and cleared by a timer
+  (`Theme.appLauncherHeightAnimDuration + Theme.menuUnloadGrace`) after it closes. The flag is
+  written only from those two places and is deliberately not derived from
+  `ApplauncherState.launcherVisible`: a derived value goes false in the same instant the state
+  does, which drops the window before it can animate out. A closed launcher holds no layer
+  surface at all; keeping the launcher and the power menu alive while closed was measured at
+  about 150 MB of RSS.
+- The panel's height animates in both directions: up out of the bottom edge when it opens, and
+  back down into it when it closes. Two things follow from the window being built late: the
+  search box takes focus through `Qt.callLater`, and the panel starts at height `0` so a window
+  created for an opening still animates up.
 - The visible panel is anchored to the bottom center. The body is `Theme.appLauncherPanelWidth`
   wide and the item that holds it is `2 * Theme.appLauncherFlare` wider, because the bottom
   curve flares out past the body. The panel's height is `Theme.appLauncherPanelHeight` (header,

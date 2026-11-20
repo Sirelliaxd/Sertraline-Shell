@@ -14,7 +14,8 @@ Singleton holding the power dropdown's open state. The menu itself is documented
 
 Nothing is persisted: the menu is closed at startup and after every reload. The bar's power icon
 and the menu window both read this singleton, which is why the click in the bar can open a window
-that lives in another file.
+that lives in another file, and `shell.qml` reads it too, to decide whether that window should
+exist at all.
 
 ## Traps
 

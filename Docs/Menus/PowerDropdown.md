@@ -33,6 +33,14 @@ It closes on `Escape`, on a click anywhere outside the panel, and after running 
 - The mask is empty while closed, so the surface takes no input. While open the whole window
   takes input (that is what makes it own the pointer) and keyboard focus is `Exclusive`, so
   arrow keys and `Enter` reach the menu instead of the focused window.
+- The window is built on demand, like the launcher's: `shell.qml` holds it in a `LazyLoader` driven
+  by an explicit `powerAlive` flag, set when the menu opens and cleared by a timer
+  (`Theme.powerDropdownAnimDuration + Theme.menuUnloadGrace`) after it closes. The flag is written
+  only from those two places and is deliberately not derived from `PowerDropdownState.visible`, so
+  the window survives long enough to animate out. Nothing of the menu exists while it is closed.
+  The panel takes keyboard focus through `Qt.callLater`, since it is created after the state
+  flips, and it starts at size `0` so a window created for an opening still grows out of its
+  corner.
 - The panel is anchored to the top left of the window, which is the top left of the usable area,
   inset by `Theme.powerDropdownMargin`. It therefore opens `Theme.borderThickness` plus that
   margin in from the screen edge, and the same distance below the bar, so it floats just under the
@@ -43,8 +51,8 @@ It closes on `Escape`, on a click anywhere outside the panel, and after running 
 The panel's `width` and `height` animate between `0` and their full size over
 `Theme.powerDropdownAnimDuration` with `Theme.powerDropdownAnimType`, with the top left corner
 anchored and `clip: true`. The panel therefore reads as a square growing out of its top left
-corner toward the bottom right, and closing runs it back into that corner. The content sits at
-its full size inside the clipped panel, so nothing reflows while it resizes.
+corner toward the bottom right, and closing runs it back into that corner the same way. The
+content sits at its full size inside the clipped panel, so nothing reflows while it resizes.
 
 ## Entries
 

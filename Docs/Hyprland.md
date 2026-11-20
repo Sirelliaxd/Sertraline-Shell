@@ -31,8 +31,9 @@ up as a shell that is simply gone, and the reason is in the log under
 
 ## Layer namespaces
 
-Each surface carries a namespace so Hyprland can match it in a layer rule. All of them exist from
-the moment the shell loads, including the menus while they are hidden behind an empty mask.
+Each surface carries a namespace so Hyprland can match it in a layer rule. The bar, the frame and the
+notch exist from the moment the shell loads. The menu namespaces only exist while that menu is
+open, because the menu windows are built on demand, see `Menus/Applauncher.md`.
 
 | Namespace | File | Surface | Layer |
 | --- | --- | --- | --- |
@@ -40,6 +41,7 @@ the moment the shell loads, including the menus while they are hidden behind an 
 | `quickshell-notch` | `components/TaskBar.qml` | The centre of the bar: workspace dots, clock, tray | default |
 | `quickshell-app-launcher` | `menus/AppLauncher.qml` | The app launcher window | `WlrLayer.Overlay` |
 | `quickshell-power-dropdown` | `menus/PowerDropdown.qml` | The power menu window | `WlrLayer.Overlay` |
+| `quickshell-volume-dropdown` | `menus/VolumeDropdown.qml` | The volume menu window | `WlrLayer.Overlay` |
 
 ## Layer rules
 
@@ -75,11 +77,18 @@ hl.layer_rule({
 	blur = true,
 	ignore_alpha = 0.2,
 })
+
+hl.layer_rule({
+	match = { namespace = "quickshell-volume-dropdown" },
+
+	blur = true,
+	ignore_alpha = 0.2,
+})
 ```
 
 Hyprland blurs each layer surface on its own, which is why the frame, its corners and both bar ends
 are a single surface rather than several. Splitting them puts a visible seam at every boundary. The
-same reasoning applies to the two menus: each is one surface, so its blur is continuous.
+same reasoning applies to the menus: each is one surface, so its blur is continuous.
 
 ## Reserved space
 
@@ -103,11 +112,17 @@ The shell exposes one IPC target per menu:
 | --- | --- | --- |
 | `applauncher` | `toggle()` | Opens or closes the app launcher |
 | `powerdropdown` | `toggle()` | Opens or closes the power menu |
+| `volumedropdown` | `toggle()` | Opens or closes the volume menu |
+
+Every handler lives in `shell.qml` rather than inside the menu windows, so the targets exist whether
+or not a menu is open. A handler inside a menu window would only be registered while that menu was
+on screen, which would make the keybinds below unable to open anything.
 
 ```
 qs ipc show                              # list the targets and functions
 qs ipc call applauncher toggle           # open or close the launcher
 qs ipc call powerdropdown toggle         # open or close the power menu
+qs ipc call volumedropdown toggle        # open or close the volume menu
 ```
 
 The bare form works because this shell is the default configuration
@@ -140,10 +155,16 @@ hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("qs ipc call applauncher toggle"))
 
 --  { power menu }
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("qs ipc call powerdropdown toggle"))
+
+--  { volume menu }
+hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("qs ipc call volumedropdown toggle"))
 ```
 
-Both menus also take the keyboard while they are open: `Up` and `Down` move the selection, `Enter`
-runs the selected entry, `Escape` closes the menu.
+The menus also take the keyboard while they are open. The launcher and the power menu move the
+selection with `Up` and `Down`, run the selected entry with `Enter`, and close on `Escape`. The
+volume menu adds `Left` and `Right` to move the selected level, `M` to mute the selected row,
+`Space` to activate a row, and it scrolls the selected row into view when the content is taller
+than its cap.
 
 ## What the shell dispatches to Hyprland
 
