@@ -90,7 +90,7 @@ Structure:
   `// TaskBar` block, then an `// App Launcher` block. Adding a feature means adding a block
   here, prefixed with that feature's name.
 - Names are `<feature><Part><Property>`, for example `appLauncherPanelWidth`,
-  `appLauncherSlideAnimDuration`, `appLauncherAppNamesFontSize`. Prefixes are the only
+  `appLauncherHeightAnimDuration`, `appLauncherAppNamesFontSize`. Prefixes are the only
   namespace the file has, and they are what keep it navigable as it grows.
 - Values may reference earlier ones, which is how the theme stays coherent: `background`
   resolves to `bgTs` or `bg` depending on `backgroundTransparency`, and the app launcher colors

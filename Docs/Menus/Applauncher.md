@@ -51,7 +51,12 @@ It closes on `Escape`, on a click outside the panel, and after launching an app.
   `Theme.appLauncherPanelHeight`, which leaves the last row about 20 px above the panel's bottom
   edge. The rows stay inside the flare's silhouette because they start `Theme.appLauncherFlare`
   plus `Theme.appLauncherContentMargin` in from the panel item's edge.
-- Shown and hidden with a `Translate` slide of `Theme.appLauncherSlideAnimDuration`.
+- Shown and hidden by animating the panel's height: `0` while hidden, the full height while
+  visible, over `Theme.appLauncherHeightAnimDuration` with `Theme.appLauncherHeightAnimType`.
+  The bottom edge is anchored, so the panel grows upward: first a sliver of the bottom edge at
+  the flare's full width, then the flare itself, then the body with its content rising out of
+  the bottom edge. The same animation covers a change in the number of rows, since that changes
+  the target height too.
 
 ## Behavior
 

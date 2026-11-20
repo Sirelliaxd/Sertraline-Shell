@@ -130,11 +130,13 @@ PanelWindow {
     Item {
         id: panel
         width: root.panelW + 2 * Theme.appLauncherFlare   // the bottom curve flares past the body
-        height: root.panelH
+        // Grows up out of the bottom edge: the flare's outer corners are what is visible
+        // first, then the body rises behind them
+        height: ApplauncherState.launcherVisible ? root.panelH : 0
         Behavior on height {
             NumberAnimation {
-                duration: Theme.appLauncherHeigthAppCountChangeAnimDuration
-                easing.type: Theme.appLauncherHeigthAppCountChangeAnimType
+                duration: Theme.appLauncherHeightAnimDuration
+                easing.type: Theme.appLauncherHeightAnimType
             }
         }
 
@@ -142,17 +144,6 @@ PanelWindow {
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-
-        // Slide up & down anim
-        transform: Translate {
-            y: ApplauncherState.launcherVisible ? 0 : root.panelH + 6
-            Behavior on y {
-                NumberAnimation {
-                    duration: Theme.appLauncherSlideAnimDuration
-                    easing.type: Theme.appLauncherSlideAnimType
-                }
-            }
-        }
 
         Rectangle {
             id: body

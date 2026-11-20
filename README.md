@@ -6,7 +6,7 @@
 ---
 My Quickshell Config 
 - Bar 
-- App Launcher* 
+- App Launcher
 - Notification center* 
 - Clipboard manager* 
 - Theme switcher* 
