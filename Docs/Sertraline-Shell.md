@@ -14,10 +14,11 @@ quickshell/
   Theme.qml            singleton: all sizes, colors, fonts, strings
   RefreshTimer.qml     the one polling loop
   components/          visual building blocks reused by windows
-    TaskBar.qml        builds the three bar windows per screen
+    TaskBar.qml        the notch window (bar centre) per screen
     WaveShape.qml      flared/curved bar background
-    Border.qml         frame around the screen
-    Corners.qml        places the four corner shapes
+    BottomFlare.qml    quarter-ellipse bottom edge of the launcher panel
+    Border.qml         the frame surface: border, corners and both bar ends
+    Corners.qml        places the four corner shapes inside that surface
     Corner.qml         one concave corner
   bar/                 bar sections (contents of the bar windows)
     Left.qml Center.qml Right.qml
@@ -53,9 +54,15 @@ The approach is consistent across the config:
   exceptions are the few leftover hardcoded labels and hex colors in `bar/Left.qml` and
   `bar/Right.qml`.
 - **Fullscreen windows that should not block input use `mask: Region {}`**, which is how the
-  border, the corners and the volume OSD stay click-through.
+  reservation surfaces and the volume OSD stay click-through. A window that needs input only in
+  part of itself masks that part instead: the frame surface masks the bar strip, so the bar is
+  clickable and the rest of the frame is not.
+- **Anything that should be blurred as one piece is drawn in one surface.** Hyprland blurs each
+  layer surface on its own, so the frame, the corners and both bar ends share a single
+  `PanelWindow`. Space reservation is the exception: a layer surface reserves space on one edge
+  only, so the frame keeps three invisible single-edge surfaces for that.
 - **Multi-monitor is handled by `Variants` over `Quickshell.screens`**, not by per-monitor
-  config files, and only where it matters (bar, border, corners). The launcher and the volume
+  config files, and only where it matters (notch, frame). The launcher and the volume
   OSD are single windows that the compositor places.
 - **There are no tests and no build step.** Quickshell watches the config and hot-reloads on
   save, so the running shell is the test. `.qmlls.ini` is a symlink into
@@ -112,9 +119,8 @@ list of children:
 ```qml
 ShellRoot {
     RefreshTimer {}   // drives the CPU and RAM samples
-    TaskBar {}        // bar windows, one set per screen
-    Border {}         // frame around the screen
-    Corners {}        // rounded corners where frame and notch meet
+    TaskBar {}        // the notch window, one per screen
+    Border {}         // frame surface: border, corners and both bar ends
     VolumeOSD {}      // volume overlay
     AppLauncher {}    // app launcher window
 }

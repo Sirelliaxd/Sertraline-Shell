@@ -12,7 +12,6 @@ ShellRoot {
     // Taskbar
     TaskBar {}
     Border {}
-    Corners {}
 
     // OSDs
     VolumeOSD {}

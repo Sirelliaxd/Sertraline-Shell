@@ -39,11 +39,11 @@ Singleton {
     readonly property int appLauncherItemHeight: 42
     readonly property int appLauncherPanelWidth: 440
     readonly property int appLauncherPanelHeight: 88
+    readonly property real appLauncherFlare: taskbarFlare
+    readonly property int appLauncherFlareHeight: 48
     readonly property int appLauncherHeigthAppCountChangeAnimDuration: 500
     readonly property real appLauncherHeigthAppCountChangeAnimType: Easing.OutCubic
     readonly property int appLauncherRadiusTop: 18
-    readonly property int appLauncherRadiusBottom: 0
-    readonly property int appLauncherBorderWidth: 1
     readonly property int appLauncherSlideAnimDuration: 500
     readonly property real appLauncherSlideAnimType: Easing.OutCubic
     readonly property int appLauncherContentMargin: 12

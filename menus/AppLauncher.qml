@@ -4,6 +4,7 @@ import Quickshell.Io
 import QtQuick
 
 import "root:/"
+import "root:/components"
 import "root:/modules"
 
 PanelWindow {
@@ -27,6 +28,8 @@ PanelWindow {
         left: true
         right: true
     }
+    // the panel starts at the screen edge, not at the top of the border the frame reserves
+    margins { bottom: -Theme.borderThickness }
 
     mask: Region {
       item: ApplauncherState.launcherVisible ? maskCover : null
@@ -124,9 +127,9 @@ PanelWindow {
     }
 
     // -- Launcher main body --
-    Rectangle {
+    Item {
         id: panel
-        width: root.panelW
+        width: root.panelW + 2 * Theme.appLauncherFlare   // the bottom curve flares past the body
         height: root.panelH
         Behavior on height {
             NumberAnimation {
@@ -140,14 +143,6 @@ PanelWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
 
-        color: Theme.background
-        topLeftRadius: Theme.appLauncherRadiusTop
-        topRightRadius: Theme.appLauncherRadiusTop
-        bottomLeftRadius: Theme.appLauncherRadiusBottom
-        bottomRightRadius: Theme.appLauncherRadiusBottom
-        border.color: Theme.border
-        border.width: Theme.appLauncherBorderWidth
-
         // Slide up & down anim
         transform: Translate {
             y: ApplauncherState.launcherVisible ? 0 : root.panelH + 6
@@ -159,14 +154,41 @@ PanelWindow {
             }
         }
 
+        Rectangle {
+            id: body
+            width: root.panelW
+            anchors {
+                top: parent.top
+                horizontalCenter: parent.horizontalCenter
+                bottom: bottomCap.top
+            }
+            color: Theme.background
+            topLeftRadius: Theme.appLauncherRadiusTop
+            topRightRadius: Theme.appLauncherRadiusTop
+        }
+
+        // Curved bottom edge: a quarter circle out of each side, flaring
+        // Theme.appLauncherFlare past the body so it flows into the frame below
+        BottomFlare {
+            id: bottomCap
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            height: Theme.appLauncherFlareHeight
+            flare: Theme.appLauncherFlare
+            fill: Theme.background
+        }
+
         // -- Content --
         Column {
             anchors {
                 top: parent.top
                 topMargin: Theme.appLauncherContentMargin
-                left: parent.left
+                left: body.left
                 leftMargin: Theme.appLauncherContentMargin
-                right: parent.right
+                right: body.right
                 rightMargin: Theme.appLauncherContentMargin
             }
             spacing: Theme.appLauncherContentSpacing

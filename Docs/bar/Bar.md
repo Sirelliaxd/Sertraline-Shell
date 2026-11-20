@@ -1,36 +1,46 @@
 # Top bar
 
-Three `PanelWindow`s per monitor, one shared look, split into left, notch and right sections.
+The bar is `Theme.barHeight` (30) tall and made of three parts: the left end, the notch in the
+middle and the right end. Only the notch is a window of its own; both ends are drawn inside the
+frame window, see `Docs/bar/borders.md`.
 
 ## Files
 
 | File | Role |
 | --- | --- |
-| `components/TaskBar.qml` | Builds the three windows for every screen |
+| `components/TaskBar.qml` | Builds the notch window for every screen |
+| `components/Border.qml` | Draws the left and right bar ends in the frame surface |
 | `bar/Left.qml` | Workspace dots |
 | `bar/Center.qml` | Clock |
 | `bar/Right.qml` | Status readouts |
 | `bar/BarText.qml` | Shared text style for bar labels |
-| `components/WaveShape.qml` | Curved ends of the notch |
-| `shell.qml` | Instantiates it: `TaskBar {}` |
+| `components/WaveShape.qml` | Flared ends of each part |
+| `shell.qml` | Instantiates the notch: `TaskBar {}` |
 
 ## Structure
 
-`TaskBar` is a `Variants` over `Quickshell.screens`, so each monitor gets its own set:
+`TaskBar.qml` is a `Variants` over `Quickshell.screens`, so every monitor gets its own notch
+window:
 
-- Left: `PanelWindow` anchored top left, namespace `quickshell-border`, `exclusionMode: Ignore`,
-  width is content plus `Theme.pad` plus `Theme.taskbarFlare`.
-- Center: the notch, namespace `quickshell-notch`, `exclusiveZone: Theme.barHeight` so windows
-  stop below it, width is content plus 165.
-- Right: mirror of the left window on the right edge.
+- `PanelWindow` anchored top, namespace `quickshell-notch`, `exclusiveZone: Theme.barHeight` so
+  windows stop below the bar, width is the clock's width plus 165.
 
-All three are `Theme.barHeight` tall and transparent; `WaveShape` paints the background, with
-`mode: "left" | "center" | "right"` and `flare` (`Theme.taskbarFlare`) producing the flared
-edges where the sections meet. `WaveShape` turns that flare into the handle length of its
-S-curve with `flare * 0.55`, which is what makes the transition look soft rather than angular.
+The two ends are `Item`s inside the frame window in `Border.qml`, anchored to the top left and
+top right of the screen:
 
-Blur on the notch needs the Hyprland layer rule from the README, matching namespace
-`quickshell-notch`.
+- width is the content's `implicitWidth` plus `Theme.pad` plus `Theme.taskbarFlare`,
+- each holds a `WaveShape` (`mode: "left"` / `"right"`, `flare: Theme.taskbarFlare`) that paints
+  the flared background, and the section itself on top.
+
+`WaveShape` turns the flare into the handle length of its S-curve with `flare * 0.55`, which is
+what makes the transition between the ends and the notch look soft rather than angular.
+
+Input: the frame window's mask is the full width bar strip, so clicks on the bar reach the
+workspace dots and the `IpadButton` while the frame and corners stay click-through.
+
+Blur: the notch needs the Hyprland layer rule from the README (namespace `quickshell-notch`).
+The ends sit in the frame surface, so they are blurred by whatever rule matches namespace
+`quickshell-border`.
 
 ## Sections
 
@@ -53,7 +63,11 @@ from the module in `modules/`. Modules with a `barTxt` are covered in `Docs/modu
 
 ## Traps
 
-- `bar/Left.qml` and `bar/Right.qml` are plain `RowLayout`s, not windows; their anchors only
-  work because they are placed inside the `PanelWindow`s from `TaskBar.qml`.
-- The sections size themselves from content (`implicitWidth`), so a new label that reads
-  `undefined` shows up as a collapsed or missing section, not as an error.
+- `bar/Left.qml` and `bar/Right.qml` are plain `RowLayout`s, not windows. They anchor
+  themselves, so they only work as children of a container that already has a size: the end
+  `Item`s in `Border.qml` for these two, the notch window for `Center.qml`.
+- The ends size themselves from content (`implicitWidth`), so a new label that reads
+  `undefined` shows up as a collapsed or missing end, not as an error.
+- Because the ends live in the frame surface, changing `barHeight` in `Theme.qml` moves them,
+  the frame and the corners together. Changing the bar's height in only one of the files leaves
+  a gap at the top of the frame.

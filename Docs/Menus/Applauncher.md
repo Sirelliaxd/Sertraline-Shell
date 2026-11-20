@@ -7,6 +7,7 @@ Bottom-centered overlay menu for searching and launching desktop entries.
 | File | Role |
 | --- | --- |
 | `menus/AppLauncher.qml` | The panel window and all of its UI |
+| `components/BottomFlare.qml` | The curved bottom edge of the panel |
 | `modules/ApplauncherState.qml` | Singleton holding visibility and recent apps |
 | `Theme.qml` | Every `appLauncher*` property (sizes, colors, strings, animations) |
 | `shell.qml` | Instantiates it: `AppLauncher {}` |
@@ -28,12 +29,28 @@ It closes on `Escape`, on a click outside the panel, and after launching an app.
 ## Window
 
 - `PanelWindow` anchored to all four edges, layer `WlrLayer.Overlay`, namespace
-  `quickshell-app-launcher`.
+  `quickshell-app-launcher`. Overlay sits above the frame, and the window carries a negative
+  bottom margin of `Theme.borderThickness` so it reaches past the space the frame reserves: the
+  panel's bottom edge is the screen edge itself, drawn over the bottom border bar.
 - `mask` is empty while hidden, so the surface takes no input; keyboard focus is `Exclusive`
   only while `ApplauncherState.launcherVisible` is true.
-- The visible panel is `Theme.appLauncherPanelWidth` wide, anchored to the bottom center. Its
-  height is the header (`Theme.appLauncherPanelHeight`) plus one row
+- The visible panel is anchored to the bottom center. The body is `Theme.appLauncherPanelWidth`
+  wide and the item that holds it is `2 * Theme.appLauncherFlare` wider, because the bottom
+  curve flares out past the body. The panel's height is `Theme.appLauncherPanelHeight` (header,
+  bottom padding and the slack below the last row, the flare is drawn inside that) plus one row
   (`Theme.appLauncherItemHeight`) per app, capped at `Theme.appLauncherMaxVisible` rows.
+- The bottom edge is `components/BottomFlare.qml`: a quarter ellipse out of each side, flaring
+  `Theme.appLauncherFlare` (the value the notch's curve uses, `Theme.taskbarFlare`) past the
+  body on both sides and rising `Theme.appLauncherFlareHeight` vertically. The curve leaves the
+  bottom edge horizontally and arrives at the body's vertical side vertically, so the flare
+  blends into the body instead of meeting it at a right angle. A plain `Rectangle` body fills
+  everything above it, with `Theme.appLauncherRadiusTop` on the top corners.
+- The content column is anchored to the body rather than to the wider panel item, so the rows
+  keep the body's width.
+- The bottom padding is `Theme.appLauncherBottomitemHeight` (4) plus the slack inside
+  `Theme.appLauncherPanelHeight`, which leaves the last row about 20 px above the panel's bottom
+  edge. The rows stay inside the flare's silhouette because they start `Theme.appLauncherFlare`
+  plus `Theme.appLauncherContentMargin` in from the panel item's edge.
 - Shown and hidden with a `Translate` slide of `Theme.appLauncherSlideAnimDuration`.
 
 ## Behavior
@@ -68,3 +85,7 @@ Recents live in `~/.local/state/quickshell/applauncher.ini`, category `AppLaunch
   `import Quickshell`, there is no `Singleton` module to import.
 - Every value used by the panel has to exist in `Theme.qml`. A misspelled property is not an
   error, it is an `undefined` that shows up as a zero size or a wrong color.
+- `BottomFlare` reads both of its radii: `flare` is the horizontal one and its own height is
+  the vertical one, so raising the height alone stretches the curve instead of moving it. The
+  padding below the rows does not have to clear the flare: the rows are already inset by the
+  flare plus the content margin, so they stay inside the curve at any depth.
